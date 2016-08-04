@@ -3,12 +3,12 @@
 	"name": "angular-wise-storage",
 	"repository": {
     "type": "git",
-    "url": "https://github.com/floydan/angular-storage"
+    "url": "https://github.com/floydan/angular-wise-storage"
   },
 	"author": "Joaim Höglund",
   "license": "MIT",
 	"bugs": {
-    "url": "https://github.com/floydan/angular-storage/issues"
+    "url": "https://github.com/floydan/angular-wise-storage/issues"
   },
   "devDependencies": {
     "gulp": "3.9.1",

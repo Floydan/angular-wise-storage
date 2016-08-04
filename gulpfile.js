@@ -31,12 +31,12 @@ gulp.task('lint', function() {
 
 gulp.task('build', function() {
   gulp.src(sourceFiles)
-    .pipe(concat('angular-storage.js'))
+    .pipe(concat('angular-wise-storage.js'))
     .pipe(ngAnnotate())
     .pipe(gulp.dest('./dist/'))
     .pipe(sourcemaps.init())
     .pipe(uglify())
-    .pipe(rename('angular-storage.min.js'))
+    .pipe(rename('angular-wise-storage.min.js'))
     .pipe(sourcemaps.init('.'))
     .pipe(gulp.dest('./dist'));
 });
