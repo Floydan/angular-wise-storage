@@ -1,10 +1,10 @@
 var gulp = require('gulp'),
-    del = require('del'),						// Delete files/folders using globs (https://www.npmjs.com/package/del)
-    jshint = require('gulp-jshint'),			// JavaScript linter (https://www.npmjs.com/package/gulp-jshint/)
-    rename = require('gulp-rename'),			// Renames file paths (https://www.npmjs.com/package/gulp-rename/)
-    sourcemaps = require('gulp-sourcemaps'),	// Creates source map files (https://www.npmjs.com/package/gulp-sourcemaps/)
-    uglify = require('gulp-uglify'),			// Minifies JavaScript (https://www.npmjs.com/package/gulp-uglify/)
-    concat = require('gulp-concat'),
+    del = require('del'),                     // Delete files/folders using globs (https://www.npmjs.com/package/del)
+    jshint = require('gulp-jshint'),          // JavaScript linter (https://www.npmjs.com/package/gulp-jshint/)
+    rename = require('gulp-rename'),          // Renames file paths (https://www.npmjs.com/package/gulp-rename/)
+    sourcemaps = require('gulp-sourcemaps'),  // Creates source map files (https://www.npmjs.com/package/gulp-sourcemaps/)
+    uglify = require('gulp-uglify'),          // Minifies JavaScript (https://www.npmjs.com/package/gulp-uglify/)
+    concat = require('gulp-concat'),          // Concatinates files to one file (https://www.npmjs.com/package/gulp-concat/)
     ngAnnotate = require('gulp-ng-annotate'),
 
     sourceFiles = [
@@ -20,7 +20,7 @@ var gulp = require('gulp'),
     ];
 
 gulp.task('clean', function () {
-	return del('./dist/**/*.*');
+  return del('./dist/**/*.*');
 });
 
 gulp.task('lint', function() {
@@ -42,10 +42,10 @@ gulp.task('build', function() {
 });
 
 gulp.task('watch', function () {
-	return gulp
+  return gulp
         .watch('./dist/**/*.{js,ts}', ['lint', 'clean', 'build'])     // Watch the scripts folder for file changes.
         .on('change', function (event) {        // Log the change to the console.
-        	console.log('File ' + event.path + ' was ' + event.type + ', build task started.');
+          console.log('File ' + event.path + ' was ' + event.type + ', build task started.');
         });
 });
 
