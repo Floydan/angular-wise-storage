@@ -36,7 +36,7 @@ function localStorageService($window, $injector) {
         k.push(key);
       }
     }
-  return k;
+    return k;
   }
 
 

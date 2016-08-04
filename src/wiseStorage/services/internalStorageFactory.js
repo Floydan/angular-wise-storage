@@ -69,5 +69,10 @@ function internalStoreFactory($log, $injector) {
     this.storage.clear();
   };
 
+
+  InternalStore.prototype.keys = function () {
+    this.storage.keys();
+  };
+
   return InternalStore;
 }

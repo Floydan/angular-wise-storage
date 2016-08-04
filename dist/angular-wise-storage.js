@@ -26,6 +26,15 @@ function cookieStorageService($cookies) {
     return $cookies.remove(key);
   };
 
+  this.keys = function() {
+    var k = [];
+
+    if(document.cookie)
+      k = document.cookie.split(';').map(function(c) { return c.split('=')[0]; });
+
+    return k;
+  };
+
   this.clear = function() {
     var cookies = $cookies.getAll();
     angular.forEach(cookies, function(v, k) {
@@ -146,7 +155,7 @@ function localStorageService($window, $injector) {
         k.push(key);
       }
     }
-  return k;
+    return k;
   }
 
 
