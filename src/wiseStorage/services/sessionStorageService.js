@@ -33,7 +33,15 @@ function sessionStorageService($window, $injector) {
     var k = [];
     for (var key in $window.sessionStorage) {
       if ($window.sessionStorage.hasOwnProperty(key)) {
-        k.push(key);
+        if(namespace)
+        {
+          var r = new RegExp('^' + namespace.replace('/\\./g', '\\.') + '\\.');
+          if(r.test(key))
+            k.push(key);
+        }
+        else {
+          k.push(key);
+        }
       }
     }
     return k;

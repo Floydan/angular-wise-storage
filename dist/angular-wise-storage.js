@@ -26,11 +26,23 @@ function cookieStorageService($cookies) {
     return $cookies.remove(key);
   };
 
-  this.keys = function() {
+  this.keys = function(namespace) {
     var k = [];
 
-    if(document.cookie)
-      k = document.cookie.split(';').map(function(c) { return c.split('=')[0]; });
+    if(document.cookie) {
+      var ks = ((document.cookie || '').split(';') || []).map(function(c) { return c.split('=')[0].trim(); });
+      if(namespace)
+      {
+        var r = new RegExp('^' + namespace + '\\.');
+        for(var i = 0, l = ks.length; i < l; i++) {
+          if(r.test(ks[i]))
+            k.push(ks[i]);
+        }
+      }
+      else {
+        k = ks;
+      }
+    }
 
     return k;
   };
@@ -114,6 +126,11 @@ function internalStoreFactory($log, $injector) {
     this.storage.clear();
   };
 
+
+  InternalStore.prototype.keys = function () {
+    this.storage.keys(this.namespace);
+  };
+
   return InternalStore;
 }
 
@@ -148,11 +165,19 @@ function localStorageService($window, $injector) {
 
   function clear() { $window.localStorage.clear(); }
 
-  function keys() {
+  function keys(namespace) {
     var k = [];
     for (var key in $window.localStorage) {
       if ($window.localStorage.hasOwnProperty(key)) {
-        k.push(key);
+        if(namespace)
+        {
+          var r = new RegExp('^' + namespace.replace('/\\./g', '\\.') + '\\.');
+          if(r.test(key))
+            k.push(key);
+        }
+        else {
+          k.push(key);
+        }
       }
     }
     return k;
@@ -213,7 +238,15 @@ function sessionStorageService($window, $injector) {
     var k = [];
     for (var key in $window.sessionStorage) {
       if ($window.sessionStorage.hasOwnProperty(key)) {
-        k.push(key);
+        if(namespace)
+        {
+          var r = new RegExp('^' + namespace.replace('/\\./g', '\\.') + '\\.');
+          if(r.test(key))
+            k.push(key);
+        }
+        else {
+          k.push(key);
+        }
       }
     }
     return k;

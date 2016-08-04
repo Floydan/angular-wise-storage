@@ -71,7 +71,7 @@ function internalStoreFactory($log, $injector) {
 
 
   InternalStore.prototype.keys = function () {
-    this.storage.keys();
+    this.storage.keys(this.namespace);
   };
 
   return InternalStore;

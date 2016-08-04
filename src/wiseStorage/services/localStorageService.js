@@ -29,11 +29,19 @@ function localStorageService($window, $injector) {
 
   function clear() { $window.localStorage.clear(); }
 
-  function keys() {
+  function keys(namespace) {
     var k = [];
     for (var key in $window.localStorage) {
       if ($window.localStorage.hasOwnProperty(key)) {
-        k.push(key);
+        if(namespace)
+        {
+          var r = new RegExp('^' + namespace.replace('/\\./g', '\\.') + '\\.');
+          if(r.test(key))
+            k.push(key);
+        }
+        else {
+          k.push(key);
+        }
       }
     }
     return k;
