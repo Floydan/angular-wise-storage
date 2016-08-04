@@ -8,8 +8,10 @@ var gulp = require('gulp'),
     ngAnnotate = require('gulp-ng-annotate'),
 
     sourceFiles = [
+      'src/wiseStorage/wise-storage.prefix',
       'src/wiseStorage/wise-storage.js',
-      'src/wiseStorage/services/**/*.js'
+      'src/wiseStorage/services/**/*.js',
+      'src/wiseStorage/wise-storage.suffix'
     ],
     lintFiles = [
       'src/wiseStorage/**/*.js',
@@ -18,7 +20,7 @@ var gulp = require('gulp'),
     ];
 
 gulp.task('clean', function () {
-	return del('dist/');
+	return del('./dist/**/*.*');
 });
 
 gulp.task('lint', function() {
@@ -41,10 +43,10 @@ gulp.task('build', function() {
 
 gulp.task('watch', function () {
 	return gulp
-        .watch('./dist/**/*.{js,ts}', ['lint', 'build'])     // Watch the scripts folder for file changes.
+        .watch('./dist/**/*.{js,ts}', ['lint', 'clean', 'build'])     // Watch the scripts folder for file changes.
         .on('change', function (event) {        // Log the change to the console.
         	console.log('File ' + event.path + ' was ' + event.type + ', build task started.');
         });
 });
 
-gulp.task('default', ['lint', 'build']);
+gulp.task('default', ['lint', 'clean', 'build']);
