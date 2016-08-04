@@ -1,6 +1,7 @@
 {
   "name": "angular-wise-storage",
   "version": "0.5.3",
+  "homepage": "https://github.com/floydan/angular-wise-storage",
   "authors": [
     {
       "name": "Joakim Höglund",
@@ -17,12 +18,12 @@
     "**/.*"
   ],
   "dependencies": {
-    "angular": "1.5.8"
+    "angular": "2.0.0"
   },
   "devDependencies": {
-    "angular-cookies": ">= 1.5.8"
+    "angular-cookies": "< 2.0.0"
   },
   "resolutions": {
-    "angular": "1.5.8"
+    "angular": "< 2.0.0"
   }
 }
