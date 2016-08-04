@@ -2,7 +2,7 @@
   'use strict';
 
 angular.module('wise-storage', [
-    'wise-storage.store'
+  'wise-storage.store'
 ]);
 
 angular
@@ -12,26 +12,26 @@ angular
 cookieStorageService.$inject = ['$cookies'];
 
 function cookieStorageService($cookies) {
-	/*jshint validthis:true */
+  /*jshint validthis:true */
 
-	this.get = function(key) {
-		return $cookies.get(key);
-	};
+  this.get = function(key) {
+    return $cookies.get(key);
+  };
 
-	this.set = function(key, value) {
-		return $cookies.put(key, value);
-	};
+  this.set = function(key, value) {
+    return $cookies.put(key, value);
+  };
 
-	this.remove = function(key) {
-		return $cookies.remove(key);
-	};
+  this.remove = function(key) {
+    return $cookies.remove(key);
+  };
 
-	this.clear = function() {
-		var cookies = $cookies.getAll();
-		angular.forEach(cookies, function(v, k) {
-			$cookies.remove(k);
-		});
-	};
+  this.clear = function() {
+    var cookies = $cookies.getAll();
+    angular.forEach(cookies, function(v, k) {
+      $cookies.remove(k);
+    });
+  };
 }
 
 angular
@@ -41,71 +41,71 @@ angular
 internalStoreFactory.$inject = ['$log', '$injector'];
 
 function internalStoreFactory($log, $injector) {
-	/*jshint validthis:true */
+  /*jshint validthis:true */
 
-	function InternalStore(namespace, storage, delimiter, useCache) {
-		this.namespace = namespace || null;
-		if (angular.isUndefined(useCache) || useCache === null) {
-			useCache = true;
-		}
-		this.useCache = useCache;
-		this.delimiter = delimiter || '.';
-		this.inMemoryCache = {};
-		this.storage = $injector.get(storage || 'localStorage');
-	}
+  function InternalStore(namespace, storage, delimiter, useCache) {
+    this.namespace = namespace || null;
+    if (angular.isUndefined(useCache) || useCache === null) {
+      useCache = true;
+    }
+    this.useCache = useCache;
+    this.delimiter = delimiter || '.';
+    this.inMemoryCache = {};
+    this.storage = $injector.get(storage || 'localStorage');
+  }
 
-	InternalStore.prototype.getNamespacedKey = function (key) {
-		if (!this.namespace) {
-			return key;
-		} else {
-			return [this.namespace, key].join(this.delimiter);
-		}
-	};
+  InternalStore.prototype.getNamespacedKey = function (key) {
+    if (!this.namespace) {
+      return key;
+    } else {
+      return [this.namespace, key].join(this.delimiter);
+    }
+  };
 
-	InternalStore.prototype.set = function (name, elem) {
-		if (this.useCache) {
-			this.inMemoryCache[name] = elem;
-		}
-		this.storage.set(this.getNamespacedKey(name), JSON.stringify(elem));
-	};
+  InternalStore.prototype.set = function (name, elem) {
+    if (this.useCache) {
+      this.inMemoryCache[name] = elem;
+    }
+    this.storage.set(this.getNamespacedKey(name), JSON.stringify(elem));
+  };
 
-	InternalStore.prototype.get = function (name) {
-		var obj = null;
-		if (this.useCache && name in this.inMemoryCache) {
-			return this.inMemoryCache[name];
-		}
-		var saved = this.storage.get(this.getNamespacedKey(name));
-		try {
+  InternalStore.prototype.get = function (name) {
+    var obj = null;
+    if (this.useCache && name in this.inMemoryCache) {
+      return this.inMemoryCache[name];
+    }
+    var saved = this.storage.get(this.getNamespacedKey(name));
+    try {
 
-			if (typeof saved === 'undefined' || saved === 'undefined') {
-				obj = undefined;
-			} else {
-				obj = JSON.parse(saved);
-			}
+      if (typeof saved === 'undefined' || saved === 'undefined') {
+        obj = undefined;
+      } else {
+        obj = JSON.parse(saved);
+      }
 
-			if (this.useCache) {
-				this.inMemoryCache[name] = obj;
-			}
-		} catch (e) {
-			$log.error('Error parsing saved value', e);
-			this.remove(name);
-		}
-		return obj;
-	};
+      if (this.useCache) {
+        this.inMemoryCache[name] = obj;
+      }
+    } catch (e) {
+      $log.error('Error parsing saved value', e);
+      this.remove(name);
+    }
+    return obj;
+  };
 
-	InternalStore.prototype.remove = function (name) {
-		if (this.useCache) {
-			this.inMemoryCache[name] = null;
-		}
-		this.storage.remove(this.getNamespacedKey(name));
-	};
+  InternalStore.prototype.remove = function (name) {
+    if (this.useCache) {
+      this.inMemoryCache[name] = null;
+    }
+    this.storage.remove(this.getNamespacedKey(name));
+  };
 
-	InternalStore.prototype.clear = function () {
-		this.inMemoryCache = {};
-		this.storage.clear();
-	};
+  InternalStore.prototype.clear = function () {
+    this.inMemoryCache = {};
+    this.storage.clear();
+  };
 
-	return InternalStore;
+  return InternalStore;
 }
 
 angular
@@ -235,60 +235,60 @@ angular
   .provider('wiseStore', wiseStoreProvider);
 
 function wiseStoreProvider() {
-	/*jshint validthis:true */
+  /*jshint validthis:true */
   var self = this;
 
-	self.storage = 'localStorage';
-	self.caching = true;
-	self.prefix = 'wise';
-	self.delimiter = '.';
+  self.storage = 'localStorage';
+  self.caching = true;
+  self.prefix = 'wise';
+  self.delimiter = '.';
   self.cookie = {
     expiry: 30,
     path: '/'
   };
 
-	self.setStore = function (storage) {
-		if (storage && angular.isString(storage)) {
-			self.storage = storage;
-		}
-		return this;
-	};
+  self.setStore = function (storage) {
+    if (storage && angular.isString(storage)) {
+      self.storage = storage;
+    }
+    return this;
+  };
 
-	self.setCaching = function (useCache) {
-		self.caching = !!useCache;
-		return this;
-	};
+  self.setCaching = function (useCache) {
+    self.caching = !!useCache;
+    return this;
+  };
 
-	self.setPrefix = function (prefix) {
-		if (prefix && angular.isString(prefix)) {
-			self.prefix = prefix;
-		}
-		return this;
-	};
+  self.setPrefix = function (prefix) {
+    if (prefix && angular.isString(prefix)) {
+      self.prefix = prefix;
+    }
+    return this;
+  };
 
-	self.setDelimiter = function (delimiter) {
-		if (delimiter && angular.isString(delimiter)) {
-			self.delimiter = delimiter;
-		}
-		return this;
-	};
+  self.setDelimiter = function (delimiter) {
+    if (delimiter && angular.isString(delimiter)) {
+      self.delimiter = delimiter;
+    }
+    return this;
+  };
 
-	self.setStorageCookie = function (exp, path, domain) {
-		self.cookie.expiry = exp || self.cookie.expiry;
-		self.cookie.path = path || self.cookie.path;
-		self.cookie.domain = domain || self.cookie.domain;
-		return this;
-	};
+  self.setStorageCookie = function (exp, path, domain) {
+    self.cookie.expiry = exp || self.cookie.expiry;
+    self.cookie.path = path || self.cookie.path;
+    self.cookie.domain = domain || self.cookie.domain;
+    return this;
+  };
 
-	self.$get = storeFactory;
+  self.$get = storeFactory;
 
     storeFactory.$inject = ['InternalStore'];
 
     function storeFactory(internalStore) {
-    	var store = new internalStore(self.prefix, self.storage, self.delimiter, self.useCache);
+      var store = new internalStore(self.prefix, self.storage, self.delimiter, self.useCache);
 
-    	store.getNamespacedStore = function (namespace, storage, delimiter, useCache) {
-    		return new internalStore(namespace, storage, delimiter, useCache);
+      store.getNamespacedStore = function (namespace, storage, delimiter, useCache) {
+        return new internalStore(namespace, storage, delimiter, useCache);
       };
 
       return store;
